@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
-#include <Wire.h>
+#include <i2c_t3.h>
 #include <Adafruit_IS31FL3731.h>
 
 #ifndef _swap_int16_t
@@ -16,7 +16,9 @@ Adafruit_IS31FL3731_Wing::Adafruit_IS31FL3731_Wing(void) : Adafruit_IS31FL3731(1
 }
 
 boolean Adafruit_IS31FL3731::begin(uint8_t addr) {
-  Wire.begin();
+   // Setup for Master mode, pins 18/19, external pullups, 400kHz, 10ms default timeout
+   Wire.begin(I2C_MASTER, 0x00, I2C_PINS_18_19, I2C_PULLUP_EXT, 400000);
+   Wire.setDefaultTimeout(10000);
 
   _i2caddr = addr;
   _frame = 0;
